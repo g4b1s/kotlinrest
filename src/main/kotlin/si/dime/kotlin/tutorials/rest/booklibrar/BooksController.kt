@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
-        class BooksController{
+class BooksController{
 
     @Autowired
     private lateinit var database: BooksDatabase
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*
     @RequestMapping("/add", method = arrayOf(RequestMethod.POST))
     fun addbook(@RequestBody book: Book) =
             if (database.addBook(book)) book
-    else throw DuplicateItemException()
+            else throw DuplicateItemException()
 
     @RequestMapping("/isbn",  method = arrayOf(RequestMethod.GET))
-    //fun getisbn(@RequestBody  ISBN: String) = database.getisbn(ISBN)
     fun getisbn(@RequestBody  book: Book) = database.getisbn(book.ISBN)
 
-
+    @RequestMapping("/iisbn/{isbnCode}",  method = arrayOf(RequestMethod.GET))
+    fun getisbn(@PathVariable isbnCode: String) = database.getisbn(isbnCode)
 }

@@ -3,11 +3,10 @@ package si.dime.kotlin.tutorials.rest.booklibrar
 
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.ResponseStatus
-import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
 @Component
-        class BooksDatabase {
+class BooksDatabase {
     private val books = mutableListOf<Book>()
 
     @PostConstruct
@@ -39,13 +38,6 @@ import javax.annotation.PostConstruct
         return true
     }
 
-//    fun getisbn(ISBN: String):Book? {
-//       //return books.stream().filter { b -> b.ISBN.equals(ISBN) }.findFirst().orElse(Book())
-//        return books.find{ it.ISBN == ISBN }?.let {
-//               return Book(it.ISBN, it.title, it.author, it.coverURL)
-//        }
-//    }
-
     fun getisbn(ISBN: String): Book? {
         return books.find { book: Book -> book.ISBN == ISBN }
     }
@@ -53,7 +45,7 @@ import javax.annotation.PostConstruct
 }
 
 @ResponseStatus (value = org.springframework.http.HttpStatus.CONFLICT, reason = "Duplicate Book.")
-     class DuplicateItemException: RuntimeException(){}
+class DuplicateItemException: RuntimeException(){}
 
 @ResponseStatus (value= org.springframework.http.HttpStatus.NOT_FOUND, reason = "Not Found.")
-        class NotFoundItemException: RuntimeException(){}
+class NotFoundItemException: RuntimeException(){}
