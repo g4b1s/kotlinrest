@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*
     else throw DuplicateItemException()
 
     @RequestMapping("/isbn",  method = arrayOf(RequestMethod.GET))
-    fun getisbn(@RequestBody  ISBN: String) = database.getisbn(ISBN)
+    //fun getisbn(@RequestBody  ISBN: String) = database.getisbn(ISBN)
+    fun getisbn(@RequestBody  book: Book) = database.getisbn(book.ISBN)
+
 
 }
