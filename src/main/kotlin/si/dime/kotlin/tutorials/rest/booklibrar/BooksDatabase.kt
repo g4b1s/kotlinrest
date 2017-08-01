@@ -1,13 +1,9 @@
 package si.dime.kotlin.tutorials.rest.booklibrar
 
-import com.sun.org.apache.xpath.internal.operations.Bool
-import com.sun.xml.internal.ws.resources.WsservletMessages
-import org.eclipse.jetty.http.HttpStatus
+
 import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseStatus
-import java.security.cert.CertPathValidatorException
+import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
 @Component
@@ -37,22 +33,27 @@ import javax.annotation.PostConstruct
 
     fun getBooks() = books
 
-    @RequestMapping("", method = arrayOf(RequestMethod.POST))
-    fun addBook(book: Book): Boolean{
-        books.firstOrNull{ it.ISBN == book.ISBN}?.let { return false }
+    fun addBook(book: Book): Boolean {
+        books.firstOrNull { it.ISBN == book.ISBN }?.let { return false }
         books.add(book)
         return true
     }
 
-//    @RequestMapping("", method = arrayOf(RequestMethod.POST))
-//    fun getisbn(): Book{
-//        //val boo
-//
+//    fun getisbn(ISBN: String):Book? {
+//       //return books.stream().filter { b -> b.ISBN.equals(ISBN) }.findFirst().orElse(Book())
+//        return books.find{ it.ISBN == ISBN }?.let {
+//               return Book(it.ISBN, it.title, it.author, it.coverURL)
+//        }
 //    }
 
+    fun getisbn(ISBN: String): Book? {
+        return books.find { book: Book -> book.ISBN == ISBN }
+    }
 
 }
 
-
 @ResponseStatus (value = org.springframework.http.HttpStatus.CONFLICT, reason = "Duplicate Book.")
      class DuplicateItemException: RuntimeException(){}
+
+@ResponseStatus (value= org.springframework.http.HttpStatus.NOT_FOUND, reason = "Not Found.")
+        class NotFoundItemException: RuntimeException(){}
