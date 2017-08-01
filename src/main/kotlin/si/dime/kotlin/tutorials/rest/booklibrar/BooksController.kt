@@ -34,4 +34,14 @@ class BooksController{
 
     }
 
+    @RequestMapping("/rm", method = arrayOf(RequestMethod.POST))
+    @ResponseStatus (value= org.springframework.http.HttpStatus.OK, reason = "OK")
+    fun removeisbn(@RequestBody book: Book) =
+            if(database.removeIsbn(book.ISBN)) true
+    else throw NotFoundItemException()
+
+    @RequestMapping("/update", method = arrayOf(RequestMethod.POST))
+    fun updateisbn(@RequestBody book: Book)= if(database.updateisbn(book)) book  else throw NotFoundItemException()
+
+
 }
